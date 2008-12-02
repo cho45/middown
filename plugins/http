@@ -3,6 +3,7 @@
 
 require 'net/http'
 require 'uri'
+require "pathname"
 Net::HTTP.version_1_2
 
 uri  = URI(ARGV.shift)
@@ -14,7 +15,7 @@ Net::HTTP.start(uri.host, uri.port) do |http|
 
 	http.request(req) do |response|
 		size = response["Content-Length"].to_f
-		File.open(dest + "/unko.dat", "wb") do |file|
+		File.open(Pathname.new(dest) + File.basename(uri.path), "wb") do |file|
 			response.read_body do |data|
 				file.write data
 				puts file.tell / size
