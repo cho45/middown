@@ -38,7 +38,6 @@ $(function () {
 						plugin   : data.plugin,
 						progress : data.progress
 					} });
-					// row.root.className = (i % 2 == 0) ? "even" : "odd"; // TODO
 					tasks[d[i].ticket] = row;
 				}
 				$(row.progressbar).width(data.progress + "%");
@@ -51,6 +50,10 @@ $(function () {
 				$(tasks[k].root).remove();
 				delete tasks[k];
 			}
+
+					// row.root.className = (i % 2 == 0) ? "even" : "odd"; // TODO
+			table.find("tr:odd").attr("class", "odd");
+			table.find("tr:even").attr("class", "even");
 
 			return wait(2).next(main);
 		});
