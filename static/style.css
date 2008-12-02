@@ -17,7 +17,7 @@ a:hover {
 html,
 body {
 	line-height: 1.33;
-	background: #111;
+	background: #060606;
 	color: #eee;
 }
 
@@ -96,3 +96,18 @@ tr.odd td {
 tr.even td {
 	background: #222;
 }
+
+form.add {
+	font-size: 80%;
+	padding: 1em 0 2em 0;;
+}
+
+form.add p,
+form.add dl,
+form.add dl dt,
+form.add dl dd {
+	display: inline;
+	margin: 0 0.5em 0 0;;
+	padding: 0;
+}
+

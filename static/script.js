@@ -26,6 +26,7 @@ $(function () {
 						ticket   : data.ticket,
 						uri      : data.uri,
 						error    : data.error || "",
+						plugin   : data.plugin,
 						progress : data.progress
 					} });
 					row.root.className = (i % 2 == 0) ? "even" : "odd";
