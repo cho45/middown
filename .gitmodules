@@ -1,0 +1,3 @@
+[submodule "theruck"]
+	path = theruck
+	url = git://github.com/cho45/theruck.git
