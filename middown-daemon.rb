@@ -72,7 +72,7 @@ module Middown
 
 		def tasks
 			@tasks.reverse.map { |t|
-				OpenStruct.new(t.keys.inject({}) {|r,i| r.update(i => t[i]) })
+				t.keys.inject({}) {|r,i| r.update(i => t[i]) }
 			}
 		end
 
@@ -191,6 +191,7 @@ module Middown
 
 		def cmd_progress
 			@middown.tasks.each do |t|
+				t = OpenStruct.new(t)
 				puts "%s: % 3.2f%% / %s %s" % [t.ticket, t.progress * 100, t.uri, t.error]
 			end
 		end
