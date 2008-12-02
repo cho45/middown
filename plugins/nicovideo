@@ -1,0 +1,51 @@
+#!/usr/bin/perl
+# original: http://search.cpan.org/src/MIYAGAWA/WWW-NicoVideo-Download-0.01/eg/fetch-video.pl
+
+use strict;
+use WWW::NicoVideo::Download;
+use Term::ProgressBar;
+use Config::Pit;
+use URI;
+use HTML::TreeBuilder::XPath;
+use Perl6::Say;
+
+my $config = pit_get("nicovideo.jp", require => {
+	"username" => "email of nicovideo.jp",
+	"password" => "password of nicovideo.jp",
+});
+
+my $url        = shift @ARGV;
+my $dest       = shift @ARGV;
+die "Usage: $0 url" unless $url;
+my ($video_id) = $url =~ qr|/([^/]+)$|;
+
+my ($length, $fh, $name);
+
+my $client = WWW::NicoVideo::Download->new( email => $config->{username}, password => $config->{password} );
+my $res = $client->user_agent->get($url);
+if ($res->is_success) {
+	my $tree = HTML::TreeBuilder::XPath->new_from_content($res->content);
+	my $title = $tree->findvalue("//h2");
+	$name = "$title.$video_id";
+} else {
+	$name = $video_id;
+}
+
+
+$client->download($video_id, sub {
+	my ($data, $res, $proto) = @_;
+
+	unless ($fh) {
+		my $ext = (split '/', $res->header('Content-Type'))[-1] || "flv";
+		$ext = "swf" if $ext =~ /flash/;
+
+		my $fn = "$dest/$name.$ext";
+
+		open $fh, ">", $fn or die $!;
+		$length = $res->header('Content-Length');
+	}
+
+	print $fh $data;
+	say((tell $fh) / $length);
+});
+
