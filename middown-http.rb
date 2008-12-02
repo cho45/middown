@@ -40,8 +40,8 @@ class MiddownRoot < Controller
 		end
 
 		route "remove.json", POST do
-			if middown.tasks.include? {|i| i["ticket"] == params["ticket"] }
-				ret = middown.remove_task(params["ticket"]).to_json
+			if middown.tasks.find {|i| i[:ticket] == params["ticket"] }
+				middown.remove_task(params["ticket"])
 				json true
 			else
 				json({"error" => "unknown ticket"})
@@ -49,7 +49,8 @@ class MiddownRoot < Controller
 		end
 
 		route "add.json", POST do
-			p params
+			head 303
+			head "Location", "/"
 			ret = middown.add_task(params["plugin"], params["uri"])
 			if ret
 				json ret

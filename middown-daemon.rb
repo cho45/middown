@@ -43,10 +43,13 @@ module Middown
 						task[:error] = err.read
 						task.kill
 					end
+
 					while l = stdout.gets
 						puts l
 						task[:progress] = l.chomp.to_f
 					end
+
+					task[:progress] = 1
 				end
 
 				task[:ticket] = ticket
@@ -63,6 +66,9 @@ module Middown
 		end
 
 		def remove_task(ticket)
+			p @tasks
+			p :remove
+			p @tasks
 			@tasks.reject! do |t|
 				if t[:ticket] == ticket
 					begin
