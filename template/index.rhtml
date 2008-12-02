@@ -1,4 +1,23 @@
 
+<form action="/api/add.json" method="post">
+<dl>
+	<dt>URI</dt>
+	<dd><input type="text" name="uri" value="" size="50"/></dd>
+	<dt>Plugin</dt>
+	<dd>
+		<select name="plugin">
+			<% plugins.each do |plugin| %>
+				<% if plugin == "http" %>
+					<option value="<%=plugin%>" selected="selected"><%=plugin%></option>
+				<% else %>
+					<option value="<%=plugin%>"><%=plugin%></option>
+				<% end %>
+			<% end %>
+		</select>
+	</dd>
+</dl>
+<p><input type="submit" value="Add"/></p>
+</form>
 <table class="tasks" id="tasks">
 	<thead>
 		<tr>
@@ -15,7 +34,7 @@
 			</td>
 			<td class="uri">#{uri}</td>
 			<td class="progress"><span class="progressbar"><span class="progressnum">#{progress}%</span></span></td>
-			<td class="message">#{error}</td>
+			<td class="message">#{plugin}: #{error}</td>
 		</tr>
 	</tbody>
 </table>

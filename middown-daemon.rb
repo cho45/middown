@@ -57,14 +57,19 @@ module Middown
 				@tasks << task
 
 				ticket
+			else
+				nil
 			end
 		end
 
 		def remove_task(ticket)
 			@tasks.reject! do |t|
 				if t[:ticket] == ticket
-					t.kill
-					Process.kill(t[:pid])
+					begin
+						t.kill
+						Process.kill(t[:pid])
+					rescue
+					end
 					true
 				end
 			end
@@ -77,7 +82,7 @@ module Middown
 		end
 
 		def plugins
-
+			Dir.glob(@config.plugin_dir + "*").map {|i| File.basename(i) }
 		end
 	end
 
