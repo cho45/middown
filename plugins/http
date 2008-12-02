@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+# vim:ft=ruby:
+
+require 'net/http'
+require 'uri'
+Net::HTTP.version_1_2
+
+uri  = URI(ARGV.shift)
+dest = ARGV.shift
+
+Net::HTTP.start(uri.host, uri.port) do |http|
+	req = Net::HTTP::Get.new(uri.request_uri)
+	#req.basic_auth 'tsun', 'dere'
+
+	http.request(req) do |response|
+		size = response["Content-Length"].to_f
+		File.open(dest + "/unko.dat", "wb") do |file|
+			response.read_body do |data|
+				file.write data
+				puts file.tell / size
+			end
+		end
+	end
+end
+
+
