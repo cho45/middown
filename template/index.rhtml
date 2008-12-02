@@ -1,4 +1,21 @@
 
-
-index だよ!
-
+<table class="tasks" id="tasks">
+	<thead>
+		<tr>
+			<th class="act">Action</th>
+			<th class="uri">URI</th>
+			<th class="progress">%</th>
+			<th class="message">Message</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="template">
+			<td class="act">
+				<a href="javascript:del(#{ticket});void(156)">del</a>
+			</td>
+			<td class="uri">#{uri}</td>
+			<td class="progress"><span class="progressbar"><span class="progressnum">#{progress}%</span></span></td>
+			<td class="message">#{error}</td>
+		</tr>
+	</tbody>
+</table>

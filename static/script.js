@@ -32,7 +32,7 @@ $(function () {
 					tasks[d[i].ticket] = row;
 				}
 				$(row.progressbar).width(data.progress + "%");
-				$(row.progressbar).html(data.progress + "%");
+				$(row.progressnum).html(data.progress + "%");
 			}
 
 			return wait(2).next(main);

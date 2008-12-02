@@ -22,7 +22,15 @@ body {
 }
 
 #top {
-	display: none;
+	margin: 2em;
+	font-size: 100%;
+}
+
+#top a:link ,
+#top a:visited ,
+#top a:hover {
+	color: #fff;
+	text-decoration: none;
 }
 
 #content {
@@ -36,7 +44,9 @@ table.tasks {
 	border-spacing: 0;
 }
 
-table.tasks td {
+table.tasks td,
+table.tasks th {
+	font-size: 85%;
 	padding: 0.5em;
 	border-style: solid;
 	border-width: 1px;
@@ -47,30 +57,36 @@ table.tasks td {
 
 th.act,
 td.act {
+	text-align: center;
 	width: 3em;
 }
 
 th.uri,
 td.uri {
-	width: 50%;
 }
 
 th.progress,
 td.progress {
+	width: 15%;
 }
 
 td.progress span.progressbar {
 	display: block;
-	padding: 0 0.5em;
+	margin: 0;
+	padding: 0;
 	border: 1px solid #000;
 	background: #03677f;
 	color: #fff;
 	text-align: right;
 }
 
+td.progress span.progressnum {
+	padding: 1em;
+}
+
 th.message,
 td.message {
-	width: 10em;
+	width: 20em;
 }
 
 tr.odd td {
