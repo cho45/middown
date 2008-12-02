@@ -179,7 +179,7 @@ module Middown
 		def cmd_progress
 			middown = DRbObject.new_with_uri($uri)
 			middown.tasks.each do |t|
-				puts "%s: % 3d%% %s" % [t.ticket, t.progress, t.error]
+				puts "%s: % 3.2f%% %s" % [t.ticket, t.progress * 100, t.error]
 			end
 		end
 	end
