@@ -9,8 +9,6 @@ require "digest/sha1"
 
 require "optparse"
 
-$uri = "druby://localhost:54954" #TODO
-
 module Middown
 	class Daemon
 		attr_reader :config
@@ -33,10 +31,14 @@ module Middown
 				task = Thread.start(dest, uri) do |d, u|
 					Thread.abort_on_exception = true
 					task = Thread.current
+					task[:progress] = 0
 
 					puts [exe, u, d]
 					stdin, stdout, stderr = *Open3.popen3(exe, u, d)
 					stdin.close
+
+					task[:pid] = stdout.pid
+
 					Thread.start(stderr) do |err|
 						task[:error] = err.read
 						task.kill
@@ -60,7 +62,11 @@ module Middown
 
 		def remove_task(ticket)
 			@tasks.reject! do |t|
-				t[:ticket] == ticket
+				if t[:ticket] == ticket
+					t.kill
+					Process.kill(t[:pid])
+					true
+				end
 			end
 		end
 
@@ -149,6 +155,15 @@ module Middown
 				puts @parser.help
 				exit
 			else
+				require "rinda/ring"
+				require "rinda/tuplespace"
+				DRb.start_service
+
+				ts = Rinda::RingFinger.primary
+				tp = ts.read([:name, :Middown, DRbObject, nil])
+				@middown = tp[2]
+
+
 				@subcommand = @argv.shift
 				method_name = "cmd_#{@subcommand}"
 				if self.respond_to?(method_name)
@@ -165,20 +180,17 @@ module Middown
 			uri, plugin, = @argv
 			plugin ||= "http"
 
-			middown = DRbObject.new_with_uri($uri)
-			puts middown.add_task(plugin, uri)
+			puts @middown.add_task(plugin, uri)
 		end
 
 		def cmd_del
 			ticket, = @argv
 
-			middown = DRbObject.new_with_uri($uri)
-			puts middown.remove_task(ticket)
+			puts @middown.remove_task(ticket)
 		end
 
 		def cmd_progress
-			middown = DRbObject.new_with_uri($uri)
-			middown.tasks.each do |t|
+			@middown.tasks.each do |t|
 				puts "%s: % 3.2f%% / %s %s" % [t.ticket, t.progress * 100, t.uri, t.error]
 			end
 		end
@@ -187,8 +199,19 @@ end
 
 
 if $0 == __FILE__
+
+	require "rinda/ring"
+	require "rinda/tuplespace"
+	DRb.start_service
+
+	ts = Rinda::TupleSpace.new
+	rs = Rinda::RingServer.new(ts)
+
 	m = Middown::Daemon.new({ :dest => "/tmp", :plugin_dir => "./plugins" })
-	DRb.start_service($uri, m)
-	puts DRb.uri
+
+	provider = Rinda::RingProvider.new(:Middown, DRbObject.new(m), 'Middown')
+	provider.provide
+
+	puts "Booted"
 	sleep
 end
