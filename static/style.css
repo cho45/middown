@@ -1,0 +1,82 @@
+
+
+a:link {
+	color: #037b7f;
+	text-decoration: underline;
+}
+
+a:visited {
+	color: #037b7f;
+	text-decoration: underline;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+html,
+body {
+	line-height: 1.33;
+	background: #111;
+	color: #eee;
+}
+
+#top {
+	display: none;
+}
+
+#content {
+	margin: 2em;
+}
+
+table.tasks {
+	width: 100%;
+	table-layout: fixed;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+table.tasks td {
+	padding: 0.5em;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #333;;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+th.act,
+td.act {
+	width: 3em;
+}
+
+th.uri,
+td.uri {
+	width: 50%;
+}
+
+th.progress,
+td.progress {
+}
+
+td.progress span.progressbar {
+	display: block;
+	padding: 0 0.5em;
+	border: 1px solid #000;
+	background: #03677f;
+	color: #fff;
+	text-align: right;
+}
+
+th.message,
+td.message {
+	width: 10em;
+}
+
+tr.odd td {
+	background: #111;
+}
+
+tr.even td {
+	background: #222;
+}

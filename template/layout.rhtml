@@ -1,28 +1,41 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title></title>
-		
-		<link rel="stylesheet" type="text/css" href="/base.css" media="screen,tv"/>
-		<link rel="stylesheet" type="text/css" href="/site.css" media="screen,tv,projection" title="site"/>
-		<link rel="meta" type="application/rdf+xml" title="FOAF" href="http://lowreal.net/cho45/foaf"/>
-
-		<link rev="made" href="mailto:cho45@lowreal.net"/>
-		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
-
-		<!-- <script type="text/javascript" src="/site-script.js"></script> -->
+		<title>Middown</title>
+		<link rel="stylesheet" type="text/css" href="/static/style.css" media="screen,tv,projection" title="site"/>
+		<script type="text/javascript" src="/static/jquery-1.2.6.min.js"></script>
+		<script type="text/javascript" src="http://svn.coderepos.org/share/lang/javascript/jsdeferred/trunk/jsdeferred.jquery.js"></script>
+		<script type="text/javascript" src="http://gist.github.com/3239.txt"></script>
+		<script type="text/javascript" src="/static/script.js"></script>
 	</head>
 	<body>
 		<div id="whole">
-			<h1 id="top"><a href="/"></a></h1>
+			<h1 id="top"><a href="/">Middown</a></h1>
 
 			<div id="content">
+				<table class="tasks" id="tasks">
+					<thead>
+						<tr>
+							<th class="act">Action</th>
+							<th class="uri">URI</th>
+							<th class="progress">%</th>
+							<th class="message">Message</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="template">
+							<td class="act">
+								<a href="javascript:del(#{ticket});void(156)">del</a>
+							</td>
+							<td class="uri">#{uri}</td>
+							<td class="progress"><span class="progressbar">#{progress}%</span></td>
+							<td class="message">#{error}</td>
+						</tr>
+					</tbody>
+				</table>
 				<%= content %>
 			</div>
 
-			<div id="footer">
-				<address>2008 <a href="mailto:cho45@lowreal.net">cho45@lowreal.net</a></address>
-			</div>
 		</div>
 	</body>
 </html>
