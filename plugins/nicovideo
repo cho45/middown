@@ -49,3 +49,4 @@ $client->download($video_id, sub {
 	say((tell $fh) / $length);
 });
 
+say 1;

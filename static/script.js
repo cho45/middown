@@ -35,6 +35,7 @@ $(function () {
 						ticket   : data.ticket,
 						uri      : data.uri,
 						error    : data.error || "",
+						message  : data.message || "",
 						plugin   : data.plugin,
 						progress : data.progress
 					} });

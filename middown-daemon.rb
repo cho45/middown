@@ -28,7 +28,7 @@ module Middown
 				ticket = Digest::SHA1.hexdigest(plugin + uri + Time.now.to_s + rand.to_s)
 				puts [plugin, uri, ticket]
 
-				task = Thread.start(dest, uri) do |d, u|
+				task = Thread.start(dest, uri, ticket) do |d, u, t|
 					Thread.abort_on_exception = true
 					task = Thread.current
 					task[:progress] = 0
@@ -41,15 +41,22 @@ module Middown
 
 					Thread.start(stderr) do |err|
 						task[:error] = err.read
-						task.kill
 					end
 
 					while l = stdout.gets
-						puts l
-						task[:progress] = l.chomp.to_f
+						l.chomp!
+						p l
+						if l =~ /^[\d.]+$/;
+							task[:progress] = l.to_f
+						else
+							task[:message] = l
+						end
 					end
 
-					task[:progress] = 1
+					# plugin は正常終了なら最後に 1 を出力するべき
+					if task[:progress] < 1
+						task[:error] = "some error happened"
+					end
 				end
 
 				task[:ticket] = ticket
@@ -66,9 +73,6 @@ module Middown
 		end
 
 		def remove_task(ticket)
-			p @tasks
-			p :remove
-			p @tasks
 			@tasks.reject! do |t|
 				if t[:ticket] == ticket
 					begin

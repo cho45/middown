@@ -11,6 +11,7 @@ dest = ARGV.shift
 
 filename = File.basename(uri.path)
 filename = "index.html" if filename == "/"
+puts "-> #{filename}"
 
 Net::HTTP.start(uri.host, uri.port) do |http|
 	req = Net::HTTP::Get.new(uri.request_uri)
@@ -27,4 +28,4 @@ Net::HTTP.start(uri.host, uri.port) do |http|
 	end
 end
 
-
+puts 1
