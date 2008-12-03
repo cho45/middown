@@ -9,13 +9,16 @@ Net::HTTP.version_1_2
 uri  = URI(ARGV.shift)
 dest = ARGV.shift
 
+filename = File.basename(uri.path)
+filename = "index.html" if filename == "/"
+
 Net::HTTP.start(uri.host, uri.port) do |http|
 	req = Net::HTTP::Get.new(uri.request_uri)
 	#req.basic_auth 'tsun', 'dere'
 
 	http.request(req) do |response|
 		size = response["Content-Length"].to_f
-		File.open(Pathname.new(dest) + File.basename(uri.path), "wb") do |file|
+		File.open(Pathname.new(dest) + filename, "wb") do |file|
 			response.read_body do |data|
 				file.write data
 				puts file.tell / size
